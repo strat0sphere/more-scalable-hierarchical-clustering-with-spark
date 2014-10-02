@@ -3,7 +3,7 @@ import sbtassembly.Plugin.AssemblyKeys._
 
 assemblySettings
 
-name := "spark-example-project"
+name := "hierarchical-clustering"
 
 version := "0.0.1"
 
