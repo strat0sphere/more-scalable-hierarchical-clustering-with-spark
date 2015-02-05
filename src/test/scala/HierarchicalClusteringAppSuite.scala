@@ -6,10 +6,19 @@ class HierarchicalClusteringAppSuite extends FunSuite with LocalSparkContext {
   test("main") {
     val master = "local[2]"
     val rows = 10000
-    val cores = 4
+    val cores = 2
     val numClusters = 10
-    val numPartitions = 4
-    val args = Array(master, rows, cores, numClusters, numPartitions).map(_.toString)
-    HierarchicalClusteringApp.main(args)
+    val dimension = 10
+    val numPartitions = cores
+
+    val args = Array(
+      master,
+      rows,
+      cores,
+      numClusters,
+      dimension,
+      numPartitions
+    ).map(_.toString)
+    val model = HierarchicalClusteringApp.main(args)
   }
 }
