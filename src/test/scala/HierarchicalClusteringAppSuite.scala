@@ -1,7 +1,6 @@
-import org.apache.spark.util.LocalSparkContext
 import org.scalatest.FunSuite
 
-class HierarchicalClusteringAppSuite extends FunSuite with LocalSparkContext {
+class HierarchicalClusteringAppSuite extends FunSuite {
 
   test("main") {
     val master = "local[2]"

@@ -20,6 +20,7 @@ object HierarchicalClusteringApp {
         .setAppName("hierarchical clustering")
         .setMaster(master)
         .set("spark.cores.max", cores)
+        .set("spark.driver.allowMultipleContexts", "true")
     val sc = new SparkContext(conf)
 
     val denseVectors = generateDenseVectors(numClusters, dimension)
