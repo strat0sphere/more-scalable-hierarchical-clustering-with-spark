@@ -17,25 +17,12 @@ seq(sbtprotobuf.ProtobufPlugin.protobufSettings: _*)
 
 // additional libraries
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "1.9.1" % "test",
-  "org.apache.spark" %% "spark-core" % "1.1.0" % "provided",
-  "org.apache.spark" %% "spark-sql" % "1.1.0" % "provided",
-  "org.apache.spark" %% "spark-hive" % "1.1.0" % "provided",
-  "org.apache.spark" %% "spark-streaming" % "1.1.0" % "provided",
-  "org.apache.spark" %% "spark-mllib" % "1.1.0" % "provided",
-  "org.apache.commons" % "commons-lang3" % "3.0",
-  "org.eclipse.jetty" % "jetty-client" % "8.1.14.v20131031",
-  "com.typesafe.play" % "play-json_2.10" % "2.2.1",
-  "com.fasterxml.jackson.core" % "jackson-databind" % "2.3.3",
-  "com.fasterxml.jackson.module" % "jackson-module-scala_2.10" % "2.3.3",
-  "org.elasticsearch" % "elasticsearch-hadoop-mr" % "2.0.0.RC1",
-  "net.sf.opencsv" % "opencsv" % "2.0",
-  "com.twitter.elephantbird" % "elephant-bird" % "4.5",
-  "com.twitter.elephantbird" % "elephant-bird-core" % "4.5",
-  "com.hadoop.gplcompression" % "hadoop-lzo" % "0.4.17",
-  "mysql" % "mysql-connector-java" % "5.1.31",
-  "com.datastax.spark" %% "spark-cassandra-connector" % "1.0.0-rc5",
-  "com.datastax.spark" %% "spark-cassandra-connector-java" % "1.0.0-rc5"
+  "org.scalatest" %% "scalatest" % "2.1.5" % "test",
+  "org.apache.spark" %% "spark-core" % "1.2.0",
+  "org.apache.spark" %% "spark-sql" % "1.2.0",
+  "org.apache.spark" %% "spark-hive" % "1.2.0",
+  "org.apache.spark" %% "spark-streaming" % "1.2.0",
+  "org.apache.spark" %% "spark-mllib" % "1.2.0"
 )
 
 resolvers ++= Seq(
@@ -52,14 +39,11 @@ resolvers ++= Seq(
   "Mesosphere Public Repository" at "http://downloads.mesosphere.io/maven"
 )
 
-mergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) => {
+mergeStrategy in assembly := {
   case m if m.toLowerCase.endsWith("manifest.mf") => MergeStrategy.discard
-  case m if m.startsWith("META-INF") => MergeStrategy.discard
-  case PathList("javax", "servlet", xs @ _ *) => MergeStrategy.first
-  case PathList("org", "apache", xs @ _ *) => MergeStrategy.first
-  case PathList("org", "jboss", xs @ _ *) => MergeStrategy.first
-  case "about.html" => MergeStrategy.rename
+  case m if m.toLowerCase.matches("meta-inf.*\\.sf$") => MergeStrategy.discard
+  case "log4j.properties" => MergeStrategy.discard
+  case m if m.toLowerCase.startsWith("meta-inf/services/") => MergeStrategy.filterDistinctLines
   case "reference.conf" => MergeStrategy.concat
   case _ => MergeStrategy.first
-}
 }
