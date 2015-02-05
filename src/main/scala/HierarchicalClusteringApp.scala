@@ -36,7 +36,15 @@ object HierarchicalClusteringApp {
       math.pow(diff, origin.size)
     }
     val failuars = distances.filter(_ > 10E-5).count
-    println(s"#Failuars: ${failuars} / ${denseTestData.count}")
+
+
+    println(s"====================================")
+    println(s"cores: ${cores}")
+    println(s"rows: ${denseData.count}")
+    println(s"numClusters: ${numClusters}")
+    println(s"dimension: ${dimension}")
+    println(s"numPartition: ${numPartitions}")
+    println(s"# Different Points: ${failuars}")
   }
 
   def generateDenseVectors(numCenters: Int, dimension: Int): Array[Vector] = {
