@@ -12,7 +12,6 @@ __MAX_CPU_CORES_LIST="160"
 __DATA_SIZE_LIST="1000000"
 __DIMENSION_LIST="10"
 __NUM_CLUSTERS_LIST="127"
-__NUM_PARTITIONS=$(($__MAX_CPU_CORES * 1))
 
 for __DATA_SIZE in $__DATA_SIZE_LIST
 do
@@ -22,6 +21,7 @@ do
     do
       for __MAX_CPU_CORES in $__MAX_CPU_CORES_LIST
       do
+        __NUM_PARTITIONS=$(($__MAX_CPU_CORES * 1))
         $SPARK_SUBMIT  \
           --master "$__SPARK_MASTER" \
           --class HierarchicalClusteringApp \
