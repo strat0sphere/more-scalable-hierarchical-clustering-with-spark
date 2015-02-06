@@ -26,7 +26,10 @@ object HierarchicalClusteringApp {
     val denseVectors = generateDenseVectors(numClusters, dimension)
     val denseTestData = generateDenseData(sc, rows, numPartitions, denseVectors)
     val denseData = denseTestData.map(_._2)
+
+    val trainStart = System.currentTimeMillis()
     val model = HierarchicalClustering.train(denseData, numClusters)
+    val trainEnd = System.currentTimeMillis() - trainStart
 
     sc.broadcast(denseVectors)
     sc.broadcast(model)
@@ -39,6 +42,7 @@ object HierarchicalClusteringApp {
 
 
     println(s"====================================")
+    println(s"Elapse Training Time: ${trainEnd / 1000.0} [sec]")
     println(s"cores: ${cores}")
     println(s"rows: ${denseData.count}")
     println(s"numClusters: ${numClusters}")
