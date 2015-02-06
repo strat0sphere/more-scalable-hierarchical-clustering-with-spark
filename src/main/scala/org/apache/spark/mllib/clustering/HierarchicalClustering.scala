@@ -368,6 +368,9 @@ class HierarchicalClustering(
 
       // remove the cluster which is involved to the cluster tree
       queue = queue.filterNot(_ == mostScattered)
+
+      log.info(s"cluster ${childrenIndexes.mkString(",")} are " +
+          s"inserted to cluster ${mostScatteredKey} as its children")
     }
     Some(root)
   }
@@ -436,11 +439,12 @@ class HierarchicalClustering(
       // update summary of each cluster
       stats = eachStats.toMap
 
-      oldVariances = variances
       variances = stats.map { case (idx, (sum, n, sumOfSquares)) =>
         math.pow(sumOfSquares.toArray.sum, sumOfSquares.size)
       }.sum
-      diffVariances = math.abs(oldVariances - variances)
+      diffVariances = math.abs(oldVariances - variances) / variances
+      oldVariances = variances
+      println(s"subIter: ${subIter}")
       println(s"variances:${variances}")
       println(s"diffVriances: ${diffVariances}")
       subIter += 1
