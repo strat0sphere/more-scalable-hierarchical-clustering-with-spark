@@ -155,7 +155,8 @@ class HierarchicalClustering(
    * @return model for the hierarchical clustering
    */
   def run(input: RDD[Vector]): HierarchicalClusteringModel = {
-    log.info(s"start hierarchical clustering")
+    val sc = input.sparkContext
+    log.info(s"${sc.appName} starts a hierarchical clustering algorithm")
 
     var data = initData(input).cache()
     val startTime = System.currentTimeMillis()
@@ -169,7 +170,7 @@ class HierarchicalClustering(
     var noMoreDividable = false
     val maxAllNodesInTree = 2 * this.numClusters - 1
     while (clusters.size < maxAllNodesInTree && noMoreDividable == false) {
-      log.info(s"STEP:${step} is started")
+      log.info(s"${sc.appName} starts step ${step}")
 
       // enough to be clustered if the number of divided clusters is equal to 0
       val divided = getDividedClusters(data, leafClusters)
@@ -180,16 +181,19 @@ class HierarchicalClustering(
         // update each index
         val newData = updateClusterIndex(data, divided).cache()
         data.unpersist()
-        data = newData
+        data = newData.cache()
 
         // merge the divided clusters with the map as the cluster tree
         clusters = clusters ++ divided
         numDividedClusters = data.map(_._1).distinct().count().toInt
         leafClusters = divided
         step += 1
+
+        log.info(s"${sc.appName} adding ${divided.size} new clusters at step:${step}")
       }
     }
 
+    log.info(s"Building the cluster tree is started in ${sc.appName}")
     val root = buildTree(clusters, HierarchicalClustering.ROOT_INDEX_KEY, this.numClusters)
     if (root == None) {
       new SparkException("Failed to build a cluster tree from a Map type of clusters")
@@ -272,13 +276,14 @@ class HierarchicalClustering(
   def getDividedClusters(data: RDD[(Int, BV[Double])],
     dividedClusters: Map[Int, ClusterTree]): Map[Int, ClusterTree] = {
     val sc = data.sparkContext
+    val appName = sc.appName
 
     // get keys of dividable clusters
     val dividableKeys = dividedClusters.filter { case (idx, cluster) =>
       cluster.variances.toArray.sum > 0.0 && cluster.records >= 2
     }.keySet
     if (dividableKeys.size == 0) {
-      log.info("There is no dividable clusters.")
+      log.info(s"There is no dividable clusters in ${appName}.")
       return Map.empty[Int, ClusterTree]
     }
 
@@ -289,20 +294,21 @@ class HierarchicalClustering(
 
     // if there is clusters which is failed to be divided,
     // retry to divide only failed clusters again and again
-    var retryTimes = 1
-    while (stats.size != dividableKeys.size * 2 && retryTimes <= this.maxRetries) {
+    var tryTimes = 1
+    while (stats.size != dividableKeys.size * 2 && tryTimes <= this.maxRetries) {
 
       // get the indexes of clusters which is failed to be divided
       val failedIndexes = idealIndexes.filterNot(stats.keySet.contains).map(idx => (idx / 2).toInt)
       val failedCenters = dividedClusters.filter { case (idx, clstr) => failedIndexes.contains(idx)}
-      log.info(s"# failed clusters: ${failedIndexes.size} at trying:${retryTimes}")
+      log.info(s"# failed clusters is ${failedCenters.size} of ${dividableKeys.size}" +
+          s"at ${tryTimes} times in ${appName}")
 
       // divide the failed clusters again
       sc.broadcast(failedIndexes)
       dividableData = data.filter { case (idx, point) => failedIndexes.contains(idx)}
       val missingStats = divide(dividableData, failedCenters)
       stats = stats ++ missingStats
-      retryTimes += 1
+      tryTimes += 1
     }
 
     // make children clusters
@@ -394,7 +400,12 @@ class HierarchicalClustering(
       (idx, (BSV.zeros[Double](vectorSize).toVector, 0.0, BSV.zeros[Double](vectorSize).toVector))
     }.toMap
 
-    for (i <- 1 to this.subIterations) {
+    var subIter = 0
+    var diffVariances = Double.MaxValue
+    var oldVariances = Double.MaxValue
+    var variances = Double.MaxValue
+    while (subIter < this.subIterations && diffVariances > 10E-4) {
+      println(s"subIter: ${subIter}")
       // calculate summary of each cluster
       val eachStats = data.mapPartitions { iter =>
         val map = mutable.Map.empty[Int, (BV[Double], Double, BV[Double])]
@@ -421,8 +432,18 @@ class HierarchicalClustering(
 
       // calculate the center of each cluster
       newCenters = eachStats.map { case (idx, (sum, n, sumOfSquares)) => (idx, sum :/ n)}
+
       // update summary of each cluster
       stats = eachStats.toMap
+
+      oldVariances = variances
+      variances = stats.map { case (idx, (sum, n, sumOfSquares)) =>
+        math.pow(sumOfSquares.toArray.sum, sumOfSquares.size)
+      }.sum
+      diffVariances = math.abs(oldVariances - variances)
+      println(s"variances:${variances}")
+      println(s"diffVriances: ${diffVariances}")
+      subIter += 1
     }
     stats
   }
