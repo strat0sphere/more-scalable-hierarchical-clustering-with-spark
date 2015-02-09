@@ -341,16 +341,14 @@ class HierarchicalClustering(
     val root = treeMap(rootIndex)
     var queue = Map(rootIndex -> root)
     while (queue.size > 0 && root.getLeavesNodes().size < numClusters) {
-
       // pick up the cluster whose variance is the maximum in the queue
-      val mostScattered = queue.maxBy(_._2.variances.toArray.sum)
+      val mostScattered = queue.maxBy(_._2.getSumOfSquaresVariances())
       val mostScatteredKey = mostScattered._1
       val mostScatteredCluster = mostScattered._2
 
       // relate the most scattered cluster to its children clusters
       val childrenIndexes = Array(2 * mostScatteredKey, 2 * mostScatteredKey + 1)
       if (childrenIndexes.forall(i => treeMap.contains(i))) {
-
         // insert children to the most scattered cluster
         val children = childrenIndexes.map(i => treeMap(i))
         mostScatteredCluster.insert(children)
@@ -439,14 +437,12 @@ class HierarchicalClustering(
       stats = eachStats.toMap
 
       variances = stats.map { case (idx, (sum, n, sumOfSquares)) =>
-        math.pow(sumOfSquares.toArray.sum, sumOfSquares.size)
+        math.pow(sumOfSquares.toArray.sum, 1.0 / sumOfSquares.size)
       }.sum
       diffVariances = math.abs(oldVariances - variances) / oldVariances
+      log.debug(s"${sc.appName}:subIter#${subIter}, variances:${variances}, " +
+          s"oldVariances:${oldVariances}, diffVariances:${diffVariances}")
       oldVariances = variances
-      println(s"subIter: ${subIter}")
-      println(s"variances:${variances}")
-      println(s"oldVariances:${oldVariances}")
-      println(s"diffVriances: ${diffVariances}")
       subIter += 1
     }
     stats
@@ -565,6 +561,14 @@ class ClusterTree(
   def getParent(): Option[ClusterTree] = this.parent
 
   def getChildren(): Array[ClusterTree] = this.children
+
+  /**
+   * Gets the sum of squares variances
+   */
+  def getSumOfSquaresVariances(): Double = {
+    val sumOfSquares = this.variances.toBreeze :* this.variances.toBreeze
+    breezeNorm(sumOfSquares, 1.0 / this.variances.size)
+  }
 
   /**
    * Gets the dendrogram height of the cluster at the cluster tree
