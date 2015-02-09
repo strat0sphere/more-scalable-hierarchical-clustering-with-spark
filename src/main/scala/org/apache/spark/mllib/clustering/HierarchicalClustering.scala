@@ -490,6 +490,7 @@ class HierarchicalClustering(
  * @param variances variance vectors
  * @param parent the parent cluster of the cluster
  * @param children the children nodes of the cluster
+ * @param sumOfSquaresVariance the sum of squares of variances
  */
 class ClusterTree(
   val center: Vector,
@@ -497,10 +498,11 @@ class ClusterTree(
   val variances: Vector,
   private var localHeight: Double,
   private var parent: Option[ClusterTree],
-  private var children: Array[ClusterTree]) extends Serializable {
+  private var children: Array[ClusterTree],
+  private var sumOfSquaresVariance: Option[Double]) extends Serializable {
 
   def this(center: Vector, rows: Long, variances: Vector) =
-    this(center, rows, variances, 0.0, None, Array.empty[ClusterTree])
+    this(center, rows, variances, 0.0, None, Array.empty[ClusterTree], None)
 
   /**
    * Inserts sub nodes as its children
@@ -566,8 +568,13 @@ class ClusterTree(
    * Gets the sum of squares variances
    */
   def getSumOfSquaresVariances(): Double = {
-    val sumOfSquares = this.variances.toBreeze :* this.variances.toBreeze
-    breezeNorm(sumOfSquares, 1.0 / this.variances.size)
+    // set the result of calculation in order to reduce calculating time
+    // because if the dimensions is very high such as 100000, it takes a long time to calculate it
+    if (this.sumOfSquaresVariance.isEmpty) {
+      val sumOfSquares = this.variances.toBreeze :* this.variances.toBreeze
+      this.sumOfSquaresVariance = Some(breezeNorm(sumOfSquares, 1.0 / this.variances.size))
+    }
+    this.sumOfSquaresVariance.get
   }
 
   /**
