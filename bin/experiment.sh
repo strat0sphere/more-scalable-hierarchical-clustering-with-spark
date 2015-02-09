@@ -23,6 +23,7 @@ do
       do
         __NUM_PARTITIONS=$(($__MAX_CPU_CORES * 1))
         $SPARK_SUBMIT  \
+          --driver-memory 16g \
           --master "$__SPARK_MASTER" \
           --class HierarchicalClusteringApp \
           --total-executor-cores $__MAX_CPU_CORES \
