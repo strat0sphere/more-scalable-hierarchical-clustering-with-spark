@@ -367,8 +367,8 @@ class HierarchicalClustering(
       // remove the cluster which is involved to the cluster tree
       queue = queue.filterNot(_ == mostScattered)
 
-      log.info(s"cluster ${childrenIndexes.mkString(",")} are " +
-          s"inserted to cluster ${mostScatteredKey} as its children")
+      log.info(s"Total Clusters: ${root.getLeavesNodes().size} / ${numClusters}. " +
+          s"Cluster ${childrenIndexes.mkString(",")} are merged.")
     }
     Some(root)
   }
