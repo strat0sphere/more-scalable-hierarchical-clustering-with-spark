@@ -193,14 +193,24 @@ class HierarchicalClustering(
       }
     }
 
+    // build a cluster tree by Map class which is expressed
     log.info(s"Building the cluster tree is started in ${sc.appName}")
     val root = buildTree(clusters, HierarchicalClustering.ROOT_INDEX_KEY, this.numClusters)
     if (root == None) {
       new SparkException("Failed to build a cluster tree from a Map type of clusters")
     }
+
+    // set the elapsed time for training
     val finishTime = (System.currentTimeMillis() - startTime) / 1000.0
     log.info(s"Elapsed Time for Hierarchical Clustering Training: ${finishTime} [sec]")
-    new HierarchicalClusteringModel(root.get)
+
+    // make a hierarchical clustering model
+    val model = new HierarchicalClusteringModel(root.get)
+    val leavesNodes = model.getClusters()
+    if (leavesNodes.size < this.numClusters) {
+      log.warn(s"# clusters is less than you have expected: ${leavesNodes}. ")
+    }
+    model
   }
 
   /**
@@ -289,14 +299,14 @@ class HierarchicalClustering(
 
     // divide input data
     var dividableData = data.filter { case (idx, point) => dividableKeys.contains(idx)}
+    var dividableClusters = dividedClusters.filter { case (k, v) => dividableKeys.contains(k)}
     val idealIndexes = dividableKeys.flatMap(idx => Array(2 * idx, 2 * idx + 1).toIterator)
-    var stats = divide(data, dividedClusters)
+    var stats = divide(data, dividableClusters)
 
     // if there is clusters which is failed to be divided,
     // retry to divide only failed clusters again and again
     var tryTimes = 1
-    while (stats.size != dividableKeys.size * 2 && tryTimes <= this.maxRetries) {
-
+    while (stats.size < dividableKeys.size * 2 && tryTimes <= this.maxRetries) {
       // get the indexes of clusters which is failed to be divided
       val failedIndexes = idealIndexes.filterNot(stats.keySet.contains).map(idx => (idx / 2).toInt)
       val failedCenters = dividedClusters.filter { case (idx, clstr) => failedIndexes.contains(idx)}
@@ -338,9 +348,10 @@ class HierarchicalClustering(
     if (!treeMap.contains(rootIndex)) return None
 
     // build a cluster tree if the queue is empty or until the number of leaves clusters is enough
+    var numLeavesClusters = 1
     val root = treeMap(rootIndex)
     var leavesQueue = Map(rootIndex -> root)
-    while (leavesQueue.size > 0 && leavesQueue.size < numClusters) {
+    while (leavesQueue.size > 0 && numLeavesClusters < numClusters) {
       // pick up the cluster whose variance is the maximum in the queue
       val mostScattered = leavesQueue.maxBy(_._2.variancesNorm)
       val mostScatteredKey = mostScattered._1
@@ -362,13 +373,14 @@ class HierarchicalClustering(
 
         // update the queue
         leavesQueue = leavesQueue ++ childrenIndexes.map(i => (i -> treeMap(i))).toMap
-
-        log.info(s"Total Leaves Clusters: ${leavesQueue.size} / ${numClusters}. " +
-            s"Cluster ${childrenIndexes.mkString(",")} are merged.")
+        numLeavesClusters += 1
       }
 
       // remove the cluster which is involved to the cluster tree
       leavesQueue = leavesQueue.filterNot(_ == mostScattered)
+
+      log.info(s"Total Leaves Clusters: ${numLeavesClusters} / ${numClusters}. " +
+          s"Cluster ${childrenIndexes.mkString(",")} are merged.")
     }
     Some(root)
   }
