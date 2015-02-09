@@ -18,9 +18,9 @@
 package org.apache.spark.mllib.clustering
 
 import breeze.linalg.{DenseVector => BDV, SparseVector => BSV, Vector => BV, norm => breezeNorm}
-import org.apache.spark.SparkContext._
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.rdd.RDD
+import org.apache.spark.SparkContext._
 import org.apache.spark.util.random.XORShiftRandom
 import org.apache.spark.{Logging, SparkException}
 
@@ -337,12 +337,13 @@ class HierarchicalClustering(
     // if there is no index in the Map
     if (!treeMap.contains(rootIndex)) return None
 
-    // build cluster tree until queue is empty or until the number of clusters is enough
+    // build a cluster tree if the queue is empty or until the number of leaves clusters is enough
     val root = treeMap(rootIndex)
-    var queue = Map(rootIndex -> root)
-    while (queue.size > 0 && root.getLeavesNodes().size < numClusters) {
+    var leavesQueue = Map(rootIndex -> root)
+    while (leavesQueue.size > 0 && root.getLeavesNodes().size < numClusters) {
+
       // pick up the cluster whose variance is the maximum in the queue
-      val mostScattered = queue.maxBy(_._2.getSumOfSquaresVariances())
+      val mostScattered = leavesQueue.maxBy(_._2.variancesNorm)
       val mostScatteredKey = mostScattered._1
       val mostScatteredCluster = mostScattered._2
 
@@ -361,13 +362,13 @@ class HierarchicalClustering(
         mostScatteredCluster.setLocalHeight(localHeight)
 
         // update the queue
-        queue = queue ++ childrenIndexes.map(i => (i -> treeMap(i))).toMap
+        leavesQueue = leavesQueue ++ childrenIndexes.map(i => (i -> treeMap(i))).toMap
       }
 
       // remove the cluster which is involved to the cluster tree
-      queue = queue.filterNot(_ == mostScattered)
+      leavesQueue = leavesQueue.filterNot(_ == mostScattered)
 
-      log.info(s"Total Clusters: ${root.getLeavesNodes().size} / ${numClusters}. " +
+      log.info(s"Total Leaves Clusters: ${root.getLeavesNodes().size} / ${numClusters}. " +
           s"Cluster ${childrenIndexes.mkString(",")} are merged.")
     }
     Some(root)
@@ -490,19 +491,20 @@ class HierarchicalClustering(
  * @param variances variance vectors
  * @param parent the parent cluster of the cluster
  * @param children the children nodes of the cluster
- * @param sumOfSquaresVariance the sum of squares of variances
+ * @param variancesNorm the sum of squares of variances
  */
 class ClusterTree(
   val center: Vector,
   val records: Long,
   val variances: Vector,
+  val variancesNorm: Double,
   private var localHeight: Double,
   private var parent: Option[ClusterTree],
-  private var children: Array[ClusterTree],
-  private var sumOfSquaresVariance: Option[Double]) extends Serializable {
+  private var children: Array[ClusterTree]) extends Serializable {
 
   def this(center: Vector, rows: Long, variances: Vector) =
-    this(center, rows, variances, 0.0, None, Array.empty[ClusterTree], None)
+    this(center, rows, variances, breezeNorm(variances.toBreeze, 2.0),
+      0.0, None, Array.empty[ClusterTree])
 
   /**
    * Inserts sub nodes as its children
@@ -563,19 +565,6 @@ class ClusterTree(
   def getParent(): Option[ClusterTree] = this.parent
 
   def getChildren(): Array[ClusterTree] = this.children
-
-  /**
-   * Gets the sum of squares variances
-   */
-  def getSumOfSquaresVariances(): Double = {
-    // set the result of calculation in order to reduce calculating time
-    // because if the dimensions is very high such as 100000, it takes a long time to calculate it
-    if (this.sumOfSquaresVariance.isEmpty) {
-      val sumOfSquares = this.variances.toBreeze :* this.variances.toBreeze
-      this.sumOfSquaresVariance = Some(breezeNorm(sumOfSquares, 1.0 / this.variances.size))
-    }
-    this.sumOfSquaresVariance.get
-  }
 
   /**
    * Gets the dendrogram height of the cluster at the cluster tree
