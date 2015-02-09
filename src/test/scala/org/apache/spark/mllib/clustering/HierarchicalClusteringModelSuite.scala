@@ -36,7 +36,7 @@ class HierarchicalClusteringModelSuite
     val model = app.run(data)
 
     val clusters = model.getClusters()
-    assert(clusters.isInstanceOf[Array[ClusterTree]])
+    assert(clusters.isInstanceOf[Seq[ClusterTree]])
     assert(clusters.size === 5)
 
     val centers = model.getCenters().sortBy(_.toArray.sum)

@@ -31,9 +31,9 @@ import org.apache.spark.rdd.RDD
 class HierarchicalClusteringModel(val tree: ClusterTree)
     extends Serializable with Logging {
 
-  def getClusters(): Array[ClusterTree] = this.tree.getLeavesNodes()
+  def getClusters(): Seq[ClusterTree] = this.tree.getLeavesNodes()
 
-  def getCenters(): Array[Vector] = this.getClusters().map(_.center)
+  def getCenters(): Seq[Vector] = this.getClusters().map(_.center)
 
   /**
    * Predicts the closest cluster by one point

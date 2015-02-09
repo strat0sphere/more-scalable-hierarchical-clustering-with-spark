@@ -79,7 +79,7 @@ object HierarchicalClustering extends Logging {
    */
   private[mllib]
   def findClosestCenter(metric: Function2[BV[Double], BV[Double], Double])
-        (centers: Array[BV[Double]])(point: BV[Double]): Int = {
+        (centers: Seq[BV[Double]])(point: BV[Double]): Int = {
     val (closestCenter, closestIndex) =
       centers.zipWithIndex.map { case (center, idx) => (metric(center, point), idx)}.minBy(_._1)
     closestIndex
@@ -500,7 +500,7 @@ class ClusterTree(
   val variancesNorm: Double,
   private var localHeight: Double,
   private var parent: Option[ClusterTree],
-  private var children: Array[ClusterTree]) extends Serializable {
+  private var children: Seq[ClusterTree]) extends Serializable {
 
   def this(center: Vector, rows: Long, variances: Vector) =
     this(center, rows, variances, breezeNorm(variances.toBreeze, 2.0),
@@ -529,12 +529,12 @@ class ClusterTree(
    * Converts the tree into Array class
    * the sub nodes are recursively expanded
    *
-   * @return Array class which the cluster tree is expanded
+   * @return Seq class which the cluster tree is expanded
    */
-  def toArray(): Array[ClusterTree] = {
+  def toSeq(): Seq[ClusterTree] = {
     val array = this.children.size match {
-      case 0 => Array(this)
-      case _ => Array(this) ++ this.children.flatMap(child => child.toArray().toIterator)
+      case 0 => Seq(this)
+      case _ => Seq(this) ++ this.children.flatMap(child => child.toSeq().toIterator)
     }
     array.sortWith { case (a, b) =>
       a.getDepth() < b.getDepth() && a.variances.toArray.sum < b.variances.toArray.sum
@@ -556,15 +556,15 @@ class ClusterTree(
   /**
    * Gets the leaves nodes in the cluster tree
    */
-  def getLeavesNodes(): Array[ClusterTree] = {
-    this.toArray().filter(_.isLeaf()).sortBy(_.center.toArray.sum)
+  def getLeavesNodes(): Seq[ClusterTree] = {
+    this.toSeq().filter(_.isLeaf()).sortBy(_.center.toArray.sum)
   }
 
   def isLeaf(): Boolean = (this.children.size == 0)
 
   def getParent(): Option[ClusterTree] = this.parent
 
-  def getChildren(): Array[ClusterTree] = this.children
+  def getChildren(): Seq[ClusterTree] = this.children
 
   /**
    * Gets the dendrogram height of the cluster at the cluster tree
