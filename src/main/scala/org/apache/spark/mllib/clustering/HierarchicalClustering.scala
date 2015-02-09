@@ -408,7 +408,6 @@ class HierarchicalClustering(
     var oldVariances = Double.MaxValue
     var variances = Double.MaxValue
     while (subIter < this.subIterations && diffVariances > 10E-4) {
-      println(s"subIter: ${subIter}")
       // calculate summary of each cluster
       val eachStats = data.mapPartitions { iter =>
         val map = mutable.Map.empty[Int, (BV[Double], Double, BV[Double])]
@@ -442,10 +441,11 @@ class HierarchicalClustering(
       variances = stats.map { case (idx, (sum, n, sumOfSquares)) =>
         math.pow(sumOfSquares.toArray.sum, sumOfSquares.size)
       }.sum
-      diffVariances = math.abs(oldVariances - variances) / variances
+      diffVariances = math.abs(oldVariances - variances) / oldVariances
       oldVariances = variances
       println(s"subIter: ${subIter}")
       println(s"variances:${variances}")
+      println(s"oldVariances:${oldVariances}")
       println(s"diffVriances: ${diffVariances}")
       subIter += 1
     }
