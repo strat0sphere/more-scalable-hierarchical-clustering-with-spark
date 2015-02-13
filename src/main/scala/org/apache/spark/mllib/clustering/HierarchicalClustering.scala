@@ -18,9 +18,9 @@
 package org.apache.spark.mllib.clustering
 
 import breeze.linalg.{DenseVector => BDV, SparseVector => BSV, Vector => BV, norm => breezeNorm}
-import org.apache.spark.SparkContext._
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.rdd.RDD
+import org.apache.spark.SparkContext._
 import org.apache.spark.util.random.XORShiftRandom
 import org.apache.spark.{Logging, SparkException}
 
@@ -168,8 +168,11 @@ class HierarchicalClustering(
     var step = 1
     var numDividedClusters = 0
     var noMoreDividable = false
-    val maxAllNodesInTree = 2 * this.numClusters - 1
     var rddArray = Array.empty[RDD[(Int, BV[Double])]]
+    // the number of maximum nodes of a binary tree by given parameter
+    val multiplier = math.ceil(math.log10(this.numClusters) / math.log10(2.0)) + 1
+    val maxAllNodesInTree = math.pow(2, multiplier).toInt
+
     while (clusters.size < maxAllNodesInTree && noMoreDividable == false) {
       log.info(s"${sc.appName} starts step ${step}")
 
