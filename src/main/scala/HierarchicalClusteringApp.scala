@@ -23,18 +23,18 @@ object HierarchicalClusteringApp {
         .set("spark.driver.allowMultipleContexts", "true")
     val sc = new SparkContext(conf)
 
-    val denseVectors = generateDenseVectors(numClusters, dimension)
-    val denseTestData = generateDenseData(sc, rows, numPartitions, denseVectors)
-    val denseData = denseTestData.map(_._2)
+    val vectors = generateDenseVectors(numClusters, dimension)
+    val trainData = generateDenseData(sc, rows, numPartitions, vectors)
+    val data = trainData.map(_._2)
 
     val trainStart = System.currentTimeMillis()
-    val model = HierarchicalClustering.train(denseData, numClusters)
+    val model = HierarchicalClustering.train(data, numClusters)
     val trainEnd = System.currentTimeMillis() - trainStart
 
-    sc.broadcast(denseVectors)
+    sc.broadcast(vectors)
     sc.broadcast(model)
-    val distances = denseTestData.map { case (idx, point) =>
-      val origin = denseVectors(idx)
+    val distances = trainData.map { case (idx, point) =>
+      val origin = vectors(idx)
       val diff = point.toArray.zip(origin.toArray).map { case (a, b) => (a - b) * (a - b)}.sum
       math.pow(diff, origin.size)
     }
@@ -44,10 +44,10 @@ object HierarchicalClusteringApp {
     println(s"====================================")
     println(s"Elapse Training Time: ${trainEnd / 1000.0} [sec]")
     println(s"cores: ${cores}")
-    println(s"rows: ${denseData.count}")
-    println(s"numClusters: ${numClusters}")
-    println(s"dimension: ${dimension}")
-    println(s"numPartition: ${numPartitions}")
+    println(s"rows: ${data.count}")
+    println(s"numClusters: ${model.getClusters().size}")
+    println(s"dimension: ${model.getCenters().head.size}")
+    println(s"numPartition: ${trainData.partitions.length}")
     println(s"# Different Points: ${failuars}")
   }
 
