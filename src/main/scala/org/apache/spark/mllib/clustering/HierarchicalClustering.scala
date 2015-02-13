@@ -18,9 +18,9 @@
 package org.apache.spark.mllib.clustering
 
 import breeze.linalg.{DenseVector => BDV, SparseVector => BSV, Vector => BV, norm => breezeNorm}
+import org.apache.spark.SparkContext._
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.rdd.RDD
-import org.apache.spark.SparkContext._
 import org.apache.spark.util.random.XORShiftRandom
 import org.apache.spark.{Logging, SparkException}
 
@@ -169,6 +169,7 @@ class HierarchicalClustering(
     var numDividedClusters = 0
     var noMoreDividable = false
     val maxAllNodesInTree = 2 * this.numClusters - 1
+    var rddArray = Array.empty[RDD[(Int, BV[Double])]]
     while (clusters.size < maxAllNodesInTree && noMoreDividable == false) {
       log.info(s"${sc.appName} starts step ${step}")
 
@@ -180,8 +181,15 @@ class HierarchicalClustering(
       else {
         // update each index
         val newData = updateClusterIndex(data, divided).cache()
-        data.unpersist()
-        data = newData.cache()
+        rddArray = rddArray ++ Array(data)
+        data = newData
+
+        // keep recent 2 cached RDDs in order to run more quickly
+        if (rddArray.size > 1) {
+          val head = rddArray.head
+          head.unpersist()
+          rddArray = rddArray.filterNot(_.hashCode() == head.hashCode())
+        }
 
         // merge the divided clusters with the map as the cluster tree
         clusters = clusters ++ divided
@@ -192,6 +200,8 @@ class HierarchicalClustering(
         log.info(s"${sc.appName} adding ${divided.size} new clusters at step:${step}")
       }
     }
+    // unpersist kept RDDs
+    rddArray.foreach(_.unpersist())
 
     // build a cluster tree by Map class which is expressed
     log.info(s"Building the cluster tree is started in ${sc.appName}")
@@ -208,7 +218,7 @@ class HierarchicalClustering(
     val model = new HierarchicalClusteringModel(root.get)
     val leavesNodes = model.getClusters()
     if (leavesNodes.size < this.numClusters) {
-      log.warn(s"# clusters is less than you have expected: ${leavesNodes}. ")
+      log.warn(s"# clusters is less than you have expected: ${leavesNodes.size} / ${numClusters}. ")
     }
     model
   }
