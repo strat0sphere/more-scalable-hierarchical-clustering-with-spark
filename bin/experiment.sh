@@ -5,7 +5,7 @@ source ~/spark/conf/spark-env.sh
 SPARK_SUBMIT=${HOME}/spark/bin/spark-submit
 __SPARK_MASTER="spark://${SPARK_MASTER_IP}:7077"
 
-__JAR="${HOME}/hierarchical-clustering-with-spark/target/scala-2.10/hierarchical-clustering_2.10-0.0.1.jar"
+__JAR="${HOME}/root/more-scalable-hierarchical-clustering-with-spark/target/scala-2.10/hierarchical-clustering_2.10-0.0.1.jar"
 
 ## paramters
 __MAX_CPU_CORES_LIST="160"
