@@ -31,7 +31,7 @@ do
             --class HierarchicalClusteringSparseApp \
             --total-executor-cores $__MAX_CPU_CORES \
             $__JAR \
-            "$__SPARK_MASTER" $__MAX_CPU_CORES $__DATA_SIZE $__DIMENSION $__NUM_CLUSTERS $__NUM_PARTITIONS $__SPARSITY
+            "$__SPARK_MASTER" $__MAX_CPU_CORES $__DATA_SIZE $__NUM_CLUSTERS $__DIMENSION $__NUM_PARTITIONS $__SPARSITY
         done
       done
     done

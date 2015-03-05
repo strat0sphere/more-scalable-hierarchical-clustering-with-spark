@@ -4,16 +4,16 @@ class HierarchicalClusteringAppSuite extends FunSuite {
 
   test("main") {
     val master = "local[2]"
-    val rows = 10000
     val cores = 2
-    val numClusters = 10
-    val dimension = 10
+    val rows = 100000
+    val numClusters = 9999
+    val dimension = 20
     val numPartitions = cores
 
     val args = Array(
       master,
-      rows,
       cores,
+      rows,
       numClusters,
       dimension,
       numPartitions

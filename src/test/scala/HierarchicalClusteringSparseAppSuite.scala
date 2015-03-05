@@ -21,17 +21,17 @@ class HierarchicalClusteringSparseAppSuite extends FunSuite {
 
   test("main") {
     val master = "local[2]"
-    val rows = 100000
     val cores = 2
+    val rows = 100000
     val numClusters = 1000
-    val dimension = 100
+    val dimension = 1000
     val numPartitions = cores
-    val sparsity = 0.1
+    val sparsity = 0.01
 
     val args = Array(
       master,
-      rows,
       cores,
+      rows,
       numClusters,
       dimension,
       numPartitions,

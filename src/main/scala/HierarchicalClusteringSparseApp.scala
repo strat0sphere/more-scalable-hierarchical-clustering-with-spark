@@ -27,8 +27,8 @@ object HierarchicalClusteringSparseApp {
   def main(args: Array[String]) {
 
     val master = args(0)
-    val rows = args(1).toInt
-    val cores = args(2).toInt
+    val cores = args(1).toInt
+    val rows = args(2).toInt
     val numClusters = args(3).toInt
     val dimension = args(4).toInt
     val numPartitions = args(5).toInt
