@@ -18,9 +18,9 @@
 package org.apache.spark.mllib.clustering
 
 import breeze.linalg.{DenseVector => BDV, SparseVector => BSV, Vector => BV, norm => breezeNorm}
-import org.apache.spark.SparkContext._
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.rdd.RDD
+import org.apache.spark.SparkContext._
 import org.apache.spark.util.random.XORShiftRandom
 import org.apache.spark.{Logging, SparkException}
 
@@ -32,7 +32,7 @@ import scala.collection.{Map, mutable}
  */
 object HierarchicalClustering extends Logging {
 
-  private[clustering] val ROOT_INDEX_KEY = 1
+  private[clustering] val ROOT_INDEX_KEY: Long = 1
 
   /**
    * Trains a hierarchical clustering model with the given data
@@ -101,7 +101,7 @@ object HierarchicalClustering extends Logging {
  */
 class HierarchicalClustering(
   private var numClusters: Int,
-  private var clusterMap: Map[Int, ClusterTree],
+  private var clusterMap: Map[Long, ClusterTree],
   private var subIterations: Int,
   private var maxRetries: Int,
   private var seed: Int) extends Logging {
@@ -109,7 +109,7 @@ class HierarchicalClustering(
   /**
    * Constructs with the default configuration
    */
-  def this() = this(20, mutable.ListMap.empty[Int, ClusterTree], 20, 10, 1)
+  def this() = this(20, mutable.ListMap.empty[Long, ClusterTree], 20, 10, 1)
 
   /**
    * Sets the number of clusters you want
@@ -168,8 +168,11 @@ class HierarchicalClustering(
     var step = 1
     var numDividedClusters = 0
     var noMoreDividable = false
-    val maxAllNodesInTree = 2 * this.numClusters - 1
-    var rddArray = Array.empty[RDD[(Int, BV[Double])]]
+    var rddArray = Array.empty[RDD[(Long, BV[Double])]]
+    // the number of maximum nodes of a binary tree by given parameter
+    val multiplier = math.ceil(math.log10(this.numClusters) / math.log10(2.0)) + 1
+    val maxAllNodesInTree = math.pow(2, multiplier).toInt
+
     while (clusters.size < maxAllNodesInTree && noMoreDividable == false) {
       log.info(s"${sc.appName} starts step ${step}")
 
@@ -227,7 +230,7 @@ class HierarchicalClustering(
    * Assigns the initial cluster index id to all data
    */
   private[clustering]
-  def initData(data: RDD[Vector]): RDD[(Int, BV[Double])] = {
+  def initData(data: RDD[Vector]): RDD[(Long, BV[Double])] = {
     data.map { v: Vector => (HierarchicalClustering.ROOT_INDEX_KEY, v.toBreeze)}.cache
   }
 
@@ -235,7 +238,7 @@ class HierarchicalClustering(
    * Summarizes data by each cluster as ClusterTree2 classes
    */
   private[clustering]
-  def summarizeAsClusters(data: RDD[(Int, BV[Double])]): Map[Int, ClusterTree] = {
+  def summarizeAsClusters(data: RDD[(Long, BV[Double])]): Map[Long, ClusterTree] = {
     // summarize input data
     val stats = summarize(data)
 
@@ -254,11 +257,11 @@ class HierarchicalClustering(
    * Summarizes data by each cluster as Map
    */
   private[clustering]
-  def summarize(data: RDD[(Int, BV[Double])]): Map[Int, (BV[Double], Double, BV[Double])] = {
+  def summarize(data: RDD[(Long, BV[Double])]): Map[Long, (BV[Double], Double, BV[Double])] = {
     data.mapPartitions { iter =>
       // calculate the accumulation of the all point in a partition and count the rows
-      val map = mutable.Map.empty[Int, (BV[Double], Double, BV[Double])]
-      iter.foreach { case (idx: Int, point: BV[Double]) =>
+      val map = mutable.Map.empty[Long, (BV[Double], Double, BV[Double])]
+      iter.foreach { case (idx: Long, point: BV[Double]) =>
         // get a map value or else get a sparse vector
         val (sumBV, n, sumOfSquares) = map.get(idx)
             .getOrElse(BSV.zeros[Double](point.size), 0.0, BSV.zeros[Double](point.size))
@@ -275,7 +278,7 @@ class HierarchicalClustering(
    * Gets the initial centers for bi-sect k-means
    */
   private[clustering]
-  def initChildrenCenter(clusters: Map[Int, BV[Double]]): Map[Int, BV[Double]] = {
+  def initChildrenCenter(clusters: Map[Long, BV[Double]]): Map[Long, BV[Double]] = {
     val rand = new XORShiftRandom()
     rand.setSeed(this.seed.toLong)
 
@@ -293,8 +296,8 @@ class HierarchicalClustering(
    * Gets the new divided centers
    */
   private[clustering]
-  def getDividedClusters(data: RDD[(Int, BV[Double])],
-    dividedClusters: Map[Int, ClusterTree]): Map[Int, ClusterTree] = {
+  def getDividedClusters(data: RDD[(Long, BV[Double])],
+    dividedClusters: Map[Long, ClusterTree]): Map[Long, ClusterTree] = {
     val sc = data.sparkContext
     val appName = sc.appName
 
@@ -304,7 +307,7 @@ class HierarchicalClustering(
     }.keySet
     if (dividableKeys.size == 0) {
       log.info(s"There is no dividable clusters in ${appName}.")
-      return Map.empty[Int, ClusterTree]
+      return Map.empty[Long, ClusterTree]
     }
 
     // divide input data
@@ -318,7 +321,7 @@ class HierarchicalClustering(
     var tryTimes = 1
     while (stats.size < dividableKeys.size * 2 && tryTimes <= this.maxRetries) {
       // get the indexes of clusters which is failed to be divided
-      val failedIndexes = idealIndexes.filterNot(stats.keySet.contains).map(idx => (idx / 2).toInt)
+      val failedIndexes = idealIndexes.filterNot(stats.keySet.contains).map(idx => (idx / 2).toLong)
       val failedCenters = dividedClusters.filter { case (idx, clstr) => failedIndexes.contains(idx)}
       log.info(s"# failed clusters is ${failedCenters.size} of ${dividableKeys.size}" +
           s"at ${tryTimes} times in ${appName}")
@@ -335,7 +338,10 @@ class HierarchicalClustering(
     stats.filter { case (i, (sum, n, sumOfSquares)) => n > 0}
         .map { case (i, (sum, n, sumOfSquares)) =>
       val center = Vectors.fromBreeze(sum :/ n)
-      val variances = Vectors.fromBreeze(sumOfSquares.:*(n) - (sum :* sum) :/ (n * (n - 1.0)))
+      val variances = n match {
+        case 1 => Vectors.sparse(sum.size, Array(), Array())
+        case _ => Vectors.fromBreeze(sumOfSquares.:*(n) - (sum :* sum) :/ (n * (n - 1.0)))
+      }
       val child = new ClusterTree(center, n.toLong, variances)
       (i, child)
     }.toMap
@@ -350,8 +356,8 @@ class HierarchicalClustering(
    * @return
    */
   private[clustering]
-  def buildTree(treeMap: Map[Int, ClusterTree],
-    rootIndex: Int,
+  def buildTree(treeMap: Map[Long, ClusterTree],
+    rootIndex: Long,
     numClusters: Int): Option[ClusterTree] = {
 
     // if there is no index in the Map
@@ -403,14 +409,14 @@ class HierarchicalClustering(
    * @return divided clusters as Map
    */
   private[clustering]
-  def divide(data: RDD[(Int, BV[Double])],
-    clusters: Map[Int, ClusterTree]): Map[Int, (BV[Double], Double, BV[Double])] = {
+  def divide(data: RDD[(Long, BV[Double])],
+    clusters: Map[Long, ClusterTree]): Map[Long, (BV[Double], Double, BV[Double])] = {
 
     val sc = data.sparkContext
     val centers = clusters.map { case (idx, cluster) => (idx, cluster.center.toBreeze)}
     var newCenters = initChildrenCenter(centers)
     if (newCenters.size == 0) {
-      return Map.empty[Int, (BV[Double], Double, BV[Double])]
+      return Map.empty[Long, (BV[Double], Double, BV[Double])]
     }
     sc.broadcast(newCenters)
 
@@ -430,7 +436,7 @@ class HierarchicalClustering(
     while (subIter < this.subIterations && diffVariances > 10E-4) {
       // calculate summary of each cluster
       val eachStats = data.mapPartitions { iter =>
-        val map = mutable.Map.empty[Int, (BV[Double], Double, BV[Double])]
+        val map = mutable.Map.empty[Long, (BV[Double], Double, BV[Double])]
         iter.foreach { case (idx, point) =>
           // calculate next index number
           val childrenCenters = Array(2 * idx, 2 * idx + 1).filter(newCenters.keySet.contains(_))
@@ -475,8 +481,8 @@ class HierarchicalClustering(
    */
   private[clustering]
   def updateClusterIndex(
-    data: RDD[(Int, BV[Double])],
-    dividedClusters: Map[Int, ClusterTree]): RDD[(Int, BV[Double])] = {
+    data: RDD[(Long, BV[Double])],
+    dividedClusters: Map[Long, ClusterTree]): RDD[(Long, BV[Double])] = {
     // extract the centers of the clusters
     val sc = data.sparkContext
     var centers = dividedClusters.map { case (idx, cluster) => (idx, cluster.center)}
@@ -522,6 +528,8 @@ class ClusterTree(
   private var localHeight: Double,
   private var parent: Option[ClusterTree],
   private var children: Seq[ClusterTree]) extends Serializable {
+
+  require(!variancesNorm.isNaN)
 
   def this(center: Vector, rows: Long, variances: Vector) =
     this(center, rows, variances, breezeNorm(variances.toBreeze, 2.0),

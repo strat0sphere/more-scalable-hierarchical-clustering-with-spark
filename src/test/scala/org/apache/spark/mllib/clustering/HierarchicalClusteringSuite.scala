@@ -96,7 +96,7 @@ class HierarchicalClusteringSuite extends FunSuite with LocalSparkContext {
     assert(clusters(1).center === Vectors.dense(49.5, 49.5))
     assert(clusters(1).records === 100)
 
-    val data2 = seed.map(v => ((v.apply(0) / 25).toInt + 1, v.toBreeze))
+    val data2 = seed.map(v => ((v.apply(0) / 25).toLong + 1L, v.toBreeze))
     val clusters2 = algo.summarizeAsClusters(data2)
     assert(clusters2.size === 4)
     assert(clusters2(1).center === Vectors.dense(12.0, 12.0))
@@ -112,8 +112,8 @@ class HierarchicalClusteringSuite extends FunSuite with LocalSparkContext {
   test("getChildrenCenter") {
     val algo = new HierarchicalClustering
     val centers = Map(
-      2 -> Vectors.dense(1.0, 1.0).toBreeze,
-      3 -> Vectors.dense(2.0, 2.0).toBreeze
+      2L -> Vectors.dense(1.0, 1.0).toBreeze,
+      3L -> Vectors.dense(2.0, 2.0).toBreeze
     )
     val initNextCenters = algo.initChildrenCenter(centers)
     assert(initNextCenters.size === 4)
@@ -122,7 +122,7 @@ class HierarchicalClusteringSuite extends FunSuite with LocalSparkContext {
 
   test("should divide clusters") {
     val algo = new HierarchicalClustering
-    val seed = (0 to 99).map(i => ((i / 50).toInt + 2, Vectors.dense(i, i).toBreeze))
+    val seed = (0 to 99).map(i => ((i / 50) + 2L, Vectors.dense(i, i).toBreeze))
     val data = sc.parallelize(seed)
     val clusters = algo.summarizeAsClusters(data)
     val newClusters = algo.getDividedClusters(data, clusters)
@@ -141,16 +141,16 @@ class HierarchicalClusteringSuite extends FunSuite with LocalSparkContext {
   test("should assign each data to new clusters") {
     val algo = new HierarchicalClustering
     val seed = Seq(
-      (2, Vectors.dense(0.0, 0.0)), (2, Vectors.dense(1.0, 1.0)), (2, Vectors.dense(2.0, 2.0)),
-      (2, Vectors.dense(3.0, 3.0)), (2, Vectors.dense(4.0, 4.0)), (2, Vectors.dense(5.0, 5.0)),
-      (3, Vectors.dense(6.0, 6.0)), (3, Vectors.dense(7.0, 7.0)), (3, Vectors.dense(8.0, 8.0)),
-      (3, Vectors.dense(9.0, 9.0)), (3, Vectors.dense(10.0, 10.0)), (3, Vectors.dense(11.0, 11.0))
+      (2L, Vectors.dense(0.0, 0.0)), (2L, Vectors.dense(1.0, 1.0)), (2L, Vectors.dense(2.0, 2.0)),
+      (2L, Vectors.dense(3.0, 3.0)), (2L, Vectors.dense(4.0, 4.0)), (2L, Vectors.dense(5.0, 5.0)),
+      (3L, Vectors.dense(6.0, 6.0)), (3L, Vectors.dense(7.0, 7.0)), (3L, Vectors.dense(8.0, 8.0)),
+      (3L, Vectors.dense(9.0, 9.0)), (3L, Vectors.dense(10.0, 10.0)), (3L, Vectors.dense(11.0, 11.0))
     ).map { case (idx, vector) => (idx, vector.toBreeze)}
     val newClusters = Map(
-      4 -> new ClusterTree(Vectors.dense(1.0, 1.0), 3, Vectors.dense(1.0, 1.0)),
-      5 -> new ClusterTree(Vectors.dense(4.0, 4.0), 3, Vectors.dense(1.0, 1.0)),
-      6 -> new ClusterTree(Vectors.dense(7.0, 7.0), 3, Vectors.dense(1.0, 1.0)),
-      7 -> new ClusterTree(Vectors.dense(10.0, 10.0), 3, Vectors.dense(1.0, 1.0))
+      4L -> new ClusterTree(Vectors.dense(1.0, 1.0), 3, Vectors.dense(1.0, 1.0)),
+      5L -> new ClusterTree(Vectors.dense(4.0, 4.0), 3, Vectors.dense(1.0, 1.0)),
+      6L -> new ClusterTree(Vectors.dense(7.0, 7.0), 3, Vectors.dense(1.0, 1.0)),
+      7L -> new ClusterTree(Vectors.dense(10.0, 10.0), 3, Vectors.dense(1.0, 1.0))
     )
     val data = sc.parallelize(seed)
     val result = algo.updateClusterIndex(data, newClusters).collect().toSeq
