@@ -12,5 +12,5 @@ This is based on bi-sect K-means algorithm.
 ## Run Unit Tests
 
 ```
-./sbt/sbt clean package
+./sbt/sbt clean test
 ```
