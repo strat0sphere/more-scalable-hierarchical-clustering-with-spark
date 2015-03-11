@@ -338,7 +338,10 @@ class HierarchicalClustering(
     stats.filter { case (i, (sum, n, sumOfSquares)) => n > 0}
         .map { case (i, (sum, n, sumOfSquares)) =>
       val center = Vectors.fromBreeze(sum :/ n)
-      val variances = Vectors.fromBreeze(sumOfSquares.:*(n) - (sum :* sum) :/ (n * (n - 1.0)))
+      val variances = n match {
+        case 1 => Vectors.sparse(sum.size, Array(), Array())
+        case _ => Vectors.fromBreeze(sumOfSquares.:*(n) - (sum :* sum) :/ (n * (n - 1.0)))
+      }
       val child = new ClusterTree(center, n.toLong, variances)
       (i, child)
     }.toMap
@@ -525,6 +528,8 @@ class ClusterTree(
   private var localHeight: Double,
   private var parent: Option[ClusterTree],
   private var children: Seq[ClusterTree]) extends Serializable {
+
+  require(!variancesNorm.isNaN)
 
   def this(center: Vector, rows: Long, variances: Vector) =
     this(center, rows, variances, breezeNorm(variances.toBreeze, 2.0),
