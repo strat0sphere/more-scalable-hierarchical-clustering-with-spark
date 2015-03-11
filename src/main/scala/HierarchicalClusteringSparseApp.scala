@@ -75,15 +75,26 @@ object HierarchicalClusteringSparseApp {
     dimension: Int,
     sparsity: Double): Array[Vector] = {
 
+    //    val random = new XORShiftRNG()
+    //    (1 to numCenters).map { i =>
+    //      var indexes = (0 to dimension - 1).map(i => (i, random.nextDouble()))
+    //          .filter { case (i, rnd) => rnd <= sparsity}.map { case (i, rnd) => i}.toArray
+    //      while (indexes.size == 0) {
+    //        indexes = (0 to dimension - 1).map(i => (i, random.nextDouble()))
+    //            .filter { case (i, rnd) => rnd <= sparsity}.map { case (i, rnd) => i}.toArray
+    //      }
+    //      val elements = indexes.map(i => 1000 * random.nextDouble())
+    //      Vectors.sparse(dimension, indexes, elements)
+    //    }.toArray
     val random = new XORShiftRNG()
     (1 to numCenters).map { i =>
-      var indexes = (0 to dimension - 1).map(i => (i, random.nextDouble()))
-          .filter { case (i, rnd) => rnd <= sparsity}.map { case (i, rnd) => i}.toArray
+      var indexes = (0 to dimension - 1).map(j => (j, random.nextDouble()))
+          .filter { case (j, rnd) => rnd <= sparsity}.map { case (j, rnd) => j}.toArray
       while (indexes.size == 0) {
-        indexes = (0 to dimension - 1).map(i => (i, random.nextDouble()))
-            .filter { case (i, rnd) => rnd <= sparsity}.map { case (i, rnd) => i}.toArray
+        indexes = (0 to dimension - 1).map(j => (j, random.nextDouble()))
+            .filter { case (j, rnd) => rnd <= sparsity}.map { case (j, rnd) => j}.toArray
       }
-      val elements = indexes.map(i => 1000 * random.nextDouble())
+      val elements = indexes.map(j => math.pow(0.8, i.toDouble))
       Vectors.sparse(dimension, indexes, elements)
     }.toArray
   }
