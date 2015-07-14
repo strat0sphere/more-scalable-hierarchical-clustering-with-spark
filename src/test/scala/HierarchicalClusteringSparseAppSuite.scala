@@ -37,6 +37,6 @@ class HierarchicalClusteringSparseAppSuite extends FunSuite {
       numPartitions,
       sparsity
     ).map(_.toString)
-    HierarchicalClusteringSparseApp.main(args)
+    BisectingKMeansSparseApp.main(args)
   }
 }
