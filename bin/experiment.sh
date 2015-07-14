@@ -5,13 +5,13 @@ source ~/spark/conf/spark-env.sh
 SPARK_SUBMIT=${HOME}/spark/bin/spark-submit
 __SPARK_MASTER="spark://${SPARK_MASTER_IP}:7077"
 
-__JAR="${HOME}/root/more-scalable-hierarchical-clustering-with-spark/target/scala-2.10/hierarchical-clustering_2.10-0.0.1.jar"
+__JAR="/root/more-scalable-hierarchical-clustering-with-spark/target/scala-2.10/hierarchical-clustering_2.10-0.0.2.jar"
 
 ## paramters
 __MAX_CPU_CORES_LIST="160"
-__DATA_SIZE_LIST="1000000"
-__DIMENSION_LIST="10"
-__NUM_CLUSTERS_LIST="127"
+__DATA_SIZE_LIST="100000 500000 1000000 5000000 10000000"
+__DIMENSION_LIST="10 50 100 500 1000 5000 10000"
+__NUM_CLUSTERS_LIST="10 50 100 500 1000"
 
 for __DATA_SIZE in $__DATA_SIZE_LIST
 do
@@ -25,7 +25,7 @@ do
         $SPARK_SUBMIT  \
           --driver-memory 16g \
           --master "$__SPARK_MASTER" \
-          --class HierarchicalClusteringApp \
+          --class BisectingKMeansApp \
           --total-executor-cores $__MAX_CPU_CORES \
           $__JAR \
           "$__SPARK_MASTER" $__MAX_CPU_CORES $__DATA_SIZE  $__NUM_CLUSTERS $__DIMENSION $__NUM_PARTITIONS

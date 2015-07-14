@@ -1,0 +1,918 @@
+====================================
+Elapse Training Time: 24.294 [sec]
+cores: 160
+rows: 100000
+numClusters: 10
+dimension: 10
+numPartition: 160
+WSSSE: 4.3117558362942465E7
+# Different Points: 0
+====================================
+Elapse Training Time: 25.025 [sec]
+cores: 160
+rows: 100000
+numClusters: 50
+dimension: 10
+numPartition: 160
+WSSSE: 4.6604923025245875E7
+# Different Points: 0
+====================================
+Elapse Training Time: 28.342 [sec]
+cores: 160
+rows: 100000
+numClusters: 100
+dimension: 10
+numPartition: 160
+WSSSE: 3.967402090899093E7
+# Different Points: 0
+====================================
+Elapse Training Time: 34.41 [sec]
+cores: 160
+rows: 100000
+numClusters: 500
+dimension: 10
+numPartition: 160
+WSSSE: 2.958948824652173E7
+# Different Points: 0
+====================================
+Elapse Training Time: 40.071 [sec]
+cores: 160
+rows: 100000
+numClusters: 1000
+dimension: 10
+numPartition: 160
+WSSSE: 2.8756934953162573E7
+# Different Points: 0
+====================================
+Elapse Training Time: 20.66 [sec]
+cores: 160
+rows: 100000
+numClusters: 10
+dimension: 50
+numPartition: 160
+WSSSE: 1.3330995238160238E8
+# Different Points: 0
+====================================
+Elapse Training Time: 26.337 [sec]
+cores: 160
+rows: 100000
+numClusters: 50
+dimension: 50
+numPartition: 160
+WSSSE: 1.3201380591485976E8
+# Different Points: 0
+====================================
+Elapse Training Time: 29.992 [sec]
+cores: 160
+rows: 100000
+numClusters: 100
+dimension: 50
+numPartition: 160
+WSSSE: 1.2684463112073077E8
+# Different Points: 0
+====================================
+Elapse Training Time: 41.025 [sec]
+cores: 160
+rows: 100000
+numClusters: 500
+dimension: 50
+numPartition: 160
+WSSSE: 1.1182912696231042E8
+# Different Points: 0
+====================================
+Elapse Training Time: 50.467 [sec]
+cores: 160
+rows: 100000
+numClusters: 1000
+dimension: 50
+numPartition: 160
+WSSSE: 1.1294921613902323E8
+# Different Points: 0
+====================================
+Elapse Training Time: 22.333 [sec]
+cores: 160
+rows: 100000
+numClusters: 10
+dimension: 100
+numPartition: 160
+WSSSE: 1.4044230804136017E8
+# Different Points: 0
+====================================
+Elapse Training Time: 29.195 [sec]
+cores: 160
+rows: 100000
+numClusters: 50
+dimension: 100
+numPartition: 160
+WSSSE: 1.8653602993405008E8
+# Different Points: 0
+====================================
+Elapse Training Time: 33.96 [sec]
+cores: 160
+rows: 100000
+numClusters: 100
+dimension: 100
+numPartition: 160
+WSSSE: 1.7170892470331028E8
+# Different Points: 0
+====================================
+Elapse Training Time: 50.636 [sec]
+cores: 160
+rows: 100000
+numClusters: 500
+dimension: 100
+numPartition: 160
+WSSSE: 1.578854285630538E8
+# Different Points: 0
+====================================
+Elapse Training Time: 62.673 [sec]
+cores: 160
+rows: 100000
+numClusters: 1000
+dimension: 100
+numPartition: 160
+WSSSE: 1.687181590202656E8
+# Different Points: 0
+====================================
+Elapse Training Time: 29.65 [sec]
+cores: 160
+rows: 100000
+numClusters: 10
+dimension: 500
+numPartition: 160
+WSSSE: 3.70970570673083E8
+# Different Points: 0
+====================================
+Elapse Training Time: 45.295 [sec]
+cores: 160
+rows: 100000
+numClusters: 50
+dimension: 500
+numPartition: 160
+WSSSE: 4.9453796716229594E8
+# Different Points: 0
+====================================
+Elapse Training Time: 61.04 [sec]
+cores: 160
+rows: 100000
+numClusters: 100
+dimension: 500
+numPartition: 160
+WSSSE: 4.295108947308802E8
+# Different Points: 0
+====================================
+Elapse Training Time: 106.071 [sec]
+cores: 160
+rows: 100000
+numClusters: 500
+dimension: 500
+numPartition: 160
+WSSSE: 4.074960822543327E8
+# Different Points: 0
+====================================
+Elapse Training Time: 603.297 [sec]
+cores: 160
+rows: 100000
+numClusters: 10
+dimension: 1000
+numPartition: 160
+WSSSE: 5.876957722511337E8
+# Different Points: 0
+====================================
+Elapse Training Time: 68.131 [sec]
+cores: 160
+rows: 100000
+numClusters: 50
+dimension: 1000
+numPartition: 160
+WSSSE: 6.518439185835276E8
+# Different Points: 0
+====================================
+Elapse Training Time: 96.159 [sec]
+cores: 160
+rows: 100000
+numClusters: 100
+dimension: 1000
+numPartition: 160
+WSSSE: 6.615390328313365E8
+# Different Points: 0
+====================================
+Elapse Training Time: 182.391 [sec]
+cores: 160
+rows: 100000
+numClusters: 500
+dimension: 1000
+numPartition: 160
+WSSSE: 5.660147920010425E8
+# Different Points: 0
+====================================
+Elapse Training Time: 113.866 [sec]
+cores: 160
+rows: 100000
+numClusters: 10
+dimension: 5000
+numPartition: 160
+WSSSE: 1.4022892295256562E9
+# Different Points: 0
+====================================
+Elapse Training Time: 245.958 [sec]
+cores: 160
+rows: 100000
+numClusters: 50
+dimension: 5000
+numPartition: 160
+WSSSE: 1.1959700234233208E9
+# Different Points: 0
+====================================
+Elapse Training Time: 385.443 [sec]
+cores: 160
+rows: 100000
+numClusters: 100
+dimension: 5000
+numPartition: 160
+WSSSE: 1.5161665849320862E9
+# Different Points: 0
+====================================
+Elapse Training Time: 197.677 [sec]
+cores: 160
+rows: 100000
+numClusters: 10
+dimension: 10000
+numPartition: 160
+WSSSE: 1.5137804409878082E9
+# Different Points: 0
+====================================
+Elapse Training Time: 24.285 [sec]
+cores: 160
+rows: 500000
+numClusters: 10
+dimension: 10
+numPartition: 160
+WSSSE: 2.6531751469173062E8
+# Different Points: 160
+====================================
+Elapse Training Time: 28.122 [sec]
+cores: 160
+rows: 500000
+numClusters: 50
+dimension: 10
+numPartition: 160
+WSSSE: 1.9225547501367027E8
+# Different Points: 160
+====================================
+Elapse Training Time: 34.044 [sec]
+cores: 160
+rows: 500000
+numClusters: 100
+dimension: 10
+numPartition: 160
+WSSSE: 2.0276831046690947E8
+# Different Points: 240
+====================================
+Elapse Training Time: 38.38 [sec]
+cores: 160
+rows: 500000
+numClusters: 500
+dimension: 10
+numPartition: 160
+WSSSE: 1.5546303937295562E8
+# Different Points: 160
+====================================
+Elapse Training Time: 45.385 [sec]
+cores: 160
+rows: 500000
+numClusters: 1000
+dimension: 10
+numPartition: 160
+WSSSE: 1.5305793551090083E8
+# Different Points: 100
+====================================
+Elapse Training Time: 23.258 [sec]
+cores: 160
+rows: 500000
+numClusters: 10
+dimension: 50
+numPartition: 160
+WSSSE: 3.6812197528214127E8
+# Different Points: 0
+====================================
+Elapse Training Time: 29.122 [sec]
+cores: 160
+rows: 500000
+numClusters: 50
+dimension: 50
+numPartition: 160
+WSSSE: 4.920282553550323E8
+# Different Points: 0
+====================================
+Elapse Training Time: 34.274 [sec]
+cores: 160
+rows: 500000
+numClusters: 100
+dimension: 50
+numPartition: 160
+WSSSE: 6.551697772464217E8
+# Different Points: 0
+====================================
+Elapse Training Time: 49.488 [sec]
+cores: 160
+rows: 500000
+numClusters: 500
+dimension: 50
+numPartition: 160
+WSSSE: 6.2233120241373E8
+# Different Points: 0
+====================================
+Elapse Training Time: 26.258 [sec]
+cores: 160
+rows: 500000
+numClusters: 10
+dimension: 100
+numPartition: 160
+WSSSE: 8.454112079987588E8
+# Different Points: 0
+====================================
+Elapse Training Time: 33.121 [sec]
+cores: 160
+rows: 500000
+numClusters: 50
+dimension: 100
+numPartition: 160
+WSSSE: 9.10790128406756E8
+# Different Points: 0
+====================================
+Elapse Training Time: 39.426 [sec]
+cores: 160
+rows: 500000
+numClusters: 100
+dimension: 100
+numPartition: 160
+WSSSE: 9.799415017640915E8
+# Different Points: 0
+====================================
+Elapse Training Time: 62.873 [sec]
+cores: 160
+rows: 500000
+numClusters: 500
+dimension: 100
+numPartition: 160
+WSSSE: 9.499377179425397E8
+# Different Points: 0
+====================================
+Elapse Training Time: 86.131 [sec]
+cores: 160
+rows: 500000
+numClusters: 1000
+dimension: 100
+numPartition: 160
+WSSSE: 9.975125969598062E8
+# Different Points: 0
+====================================
+Elapse Training Time: 49.451 [sec]
+cores: 160
+rows: 500000
+numClusters: 10
+dimension: 500
+numPartition: 160
+WSSSE: 1.873041804450845E9
+# Different Points: 0
+====================================
+Elapse Training Time: 77.22 [sec]
+cores: 160
+rows: 500000
+numClusters: 50
+dimension: 500
+numPartition: 160
+WSSSE: 2.1539483295074425E9
+# Different Points: 0
+====================================
+Elapse Training Time: 95.347 [sec]
+cores: 160
+rows: 500000
+numClusters: 100
+dimension: 500
+numPartition: 160
+WSSSE: 2.847665821815975E9
+# Different Points: 0
+====================================
+Elapse Training Time: 188.715 [sec]
+cores: 160
+rows: 500000
+numClusters: 500
+dimension: 500
+numPartition: 160
+WSSSE: 2.4189903909189916E9
+# Different Points: 0
+====================================
+Elapse Training Time: 284.94 [sec]
+cores: 160
+rows: 500000
+numClusters: 1000
+dimension: 500
+numPartition: 160
+WSSSE: 2.4884659969448333E9
+# Different Points: 0
+====================================
+Elapse Training Time: 79.687 [sec]
+cores: 160
+rows: 500000
+numClusters: 10
+dimension: 1000
+numPartition: 160
+WSSSE: 3.154354598584785E9
+# Different Points: 0
+====================================
+Elapse Training Time: 133.134 [sec]
+cores: 160
+rows: 500000
+numClusters: 50
+dimension: 1000
+numPartition: 160
+WSSSE: 2.971583371270322E9
+# Different Points: 0
+====================================
+Elapse Training Time: 182.351 [sec]
+cores: 160
+rows: 500000
+numClusters: 100
+dimension: 1000
+numPartition: 160
+WSSSE: 3.2609059970918245E9
+# Different Points: 0
+====================================
+Elapse Training Time: 332.46 [sec]
+cores: 160
+rows: 500000
+numClusters: 500
+dimension: 1000
+numPartition: 160
+WSSSE: 3.5550655361158357E9
+# Different Points: 0
+====================================
+Elapse Training Time: 358.458 [sec]
+cores: 160
+rows: 500000
+numClusters: 10
+dimension: 5000
+numPartition: 160
+WSSSE: 6.009382043024851E9
+# Different Points: 0
+====================================
+Elapse Training Time: 580.868 [sec]
+cores: 160
+rows: 500000
+numClusters: 50
+dimension: 5000
+numPartition: 160
+WSSSE: 6.286553511592024E9
+# Different Points: 0
+====================================
+Elapse Training Time: 665.484 [sec]
+cores: 160
+rows: 500000
+numClusters: 10
+dimension: 10000
+numPartition: 160
+WSSSE: 8.506650984360522E9
+# Different Points: 0
+====================================
+Elapse Training Time: 24.533 [sec]
+cores: 160
+rows: 1000000
+numClusters: 10
+dimension: 10
+numPartition: 160
+WSSSE: 3.788073713821133E8
+# Different Points: 160
+====================================
+Elapse Training Time: 30.53 [sec]
+cores: 160
+rows: 1000000
+numClusters: 50
+dimension: 10
+numPartition: 160
+WSSSE: 4.4147479923803043E8
+# Different Points: 0
+====================================
+Elapse Training Time: 33.265 [sec]
+cores: 160
+rows: 1000000
+numClusters: 100
+dimension: 10
+numPartition: 160
+WSSSE: 4.501867302845875E8
+# Different Points: 160
+====================================
+Elapse Training Time: 40.997 [sec]
+cores: 160
+rows: 1000000
+numClusters: 500
+dimension: 10
+numPartition: 160
+WSSSE: 3.4414438636378133E8
+# Different Points: 80
+====================================
+Elapse Training Time: 49.744 [sec]
+cores: 160
+rows: 1000000
+numClusters: 1000
+dimension: 10
+numPartition: 160
+WSSSE: 3.224784325587052E8
+# Different Points: 240
+====================================
+Elapse Training Time: 25.168 [sec]
+cores: 160
+rows: 1000000
+numClusters: 10
+dimension: 50
+numPartition: 160
+WSSSE: 7.065634735152762E8
+# Different Points: 0
+====================================
+Elapse Training Time: 32.878 [sec]
+cores: 160
+rows: 1000000
+numClusters: 50
+dimension: 50
+numPartition: 160
+WSSSE: 1.4374895281149638E9
+# Different Points: 0
+====================================
+Elapse Training Time: 36.781 [sec]
+cores: 160
+rows: 1000000
+numClusters: 100
+dimension: 50
+numPartition: 160
+WSSSE: 1.3257417131386242E9
+# Different Points: 0
+====================================
+Elapse Training Time: 53.227 [sec]
+cores: 160
+rows: 1000000
+numClusters: 500
+dimension: 50
+numPartition: 160
+WSSSE: 1.2617657425500674E9
+# Different Points: 0
+====================================
+Elapse Training Time: 30.515 [sec]
+cores: 160
+rows: 1000000
+numClusters: 10
+dimension: 100
+numPartition: 160
+WSSSE: 1.4622810842519033E9
+# Different Points: 0
+====================================
+Elapse Training Time: 39.685 [sec]
+cores: 160
+rows: 1000000
+numClusters: 50
+dimension: 100
+numPartition: 160
+WSSSE: 1.7200872250524638E9
+# Different Points: 0
+====================================
+Elapse Training Time: 45.545 [sec]
+cores: 160
+rows: 1000000
+numClusters: 100
+dimension: 100
+numPartition: 160
+WSSSE: 1.897105157437454E9
+# Different Points: 0
+====================================
+Elapse Training Time: 72.508 [sec]
+cores: 160
+rows: 1000000
+numClusters: 500
+dimension: 100
+numPartition: 160
+WSSSE: 1.9254585369386854E9
+# Different Points: 0
+====================================
+Elapse Training Time: 100.165 [sec]
+cores: 160
+rows: 1000000
+numClusters: 1000
+dimension: 100
+numPartition: 160
+WSSSE: 1.905081620175388E9
+# Different Points: 0
+====================================
+Elapse Training Time: 74.625 [sec]
+cores: 160
+rows: 1000000
+numClusters: 10
+dimension: 500
+numPartition: 160
+WSSSE: 3.106134450876292E9
+# Different Points: 0
+====================================
+Elapse Training Time: 111.699 [sec]
+cores: 160
+rows: 1000000
+numClusters: 50
+dimension: 500
+numPartition: 160
+WSSSE: 4.697411727430117E9
+# Different Points: 0
+====================================
+Elapse Training Time: 124.97 [sec]
+cores: 160
+rows: 1000000
+numClusters: 100
+dimension: 500
+numPartition: 160
+WSSSE: 4.486960019424864E9
+# Different Points: 0
+====================================
+Elapse Training Time: 236.522 [sec]
+cores: 160
+rows: 1000000
+numClusters: 500
+dimension: 500
+numPartition: 160
+WSSSE: 4.962543400992853E9
+# Different Points: 0
+====================================
+Elapse Training Time: 368.044 [sec]
+cores: 160
+rows: 1000000
+numClusters: 1000
+dimension: 500
+numPartition: 160
+WSSSE: 4.86152165888584E9
+# Different Points: 0
+====================================
+Elapse Training Time: 132.823 [sec]
+cores: 160
+rows: 1000000
+numClusters: 10
+dimension: 1000
+numPartition: 160
+WSSSE: 5.659742675976879E9
+# Different Points: 0
+====================================
+Elapse Training Time: 207.346 [sec]
+cores: 160
+rows: 1000000
+numClusters: 50
+dimension: 1000
+numPartition: 160
+WSSSE: 6.585003703203928E9
+# Different Points: 0
+====================================
+Elapse Training Time: 270.748 [sec]
+cores: 160
+rows: 1000000
+numClusters: 100
+dimension: 1000
+numPartition: 160
+WSSSE: 6.305890847369186E9
+# Different Points: 0
+====================================
+Elapse Training Time: 467.87 [sec]
+cores: 160
+rows: 1000000
+numClusters: 500
+dimension: 1000
+numPartition: 160
+WSSSE: 6.855762663388285E9
+# Different Points: 0
+====================================
+Elapse Training Time: 587.395 [sec]
+cores: 160
+rows: 1000000
+numClusters: 10
+dimension: 5000
+numPartition: 160
+WSSSE: 1.1154139098284395E10
+# Different Points: 0
+====================================
+Elapse Training Time: 1014.958 [sec]
+cores: 160
+rows: 1000000
+numClusters: 50
+dimension: 5000
+numPartition: 160
+WSSSE: 1.3425793294620949E10
+# Different Points: 0
+====================================
+Elapse Training Time: 1164.502 [sec]
+cores: 160
+rows: 1000000
+numClusters: 10
+dimension: 10000
+numPartition: 160
+WSSSE: 1.7037093707535473E10
+# Different Points: 0
+====================================
+Elapse Training Time: 29.533 [sec]
+cores: 160
+rows: 5000000
+numClusters: 10
+dimension: 10
+numPartition: 160
+WSSSE: 1.801204709884567E9
+# Different Points: 0
+====================================
+Elapse Training Time: 41.954 [sec]
+cores: 160
+rows: 5000000
+numClusters: 50
+dimension: 10
+numPartition: 160
+WSSSE: 2.230371665128243E9
+# Different Points: 640
+====================================
+Elapse Training Time: 45.735 [sec]
+cores: 160
+rows: 5000000
+numClusters: 100
+dimension: 10
+numPartition: 160
+WSSSE: 2.1213169920726619E9
+# Different Points: 1200
+====================================
+Elapse Training Time: 55.092 [sec]
+cores: 160
+rows: 5000000
+numClusters: 500
+dimension: 10
+numPartition: 160
+WSSSE: 1.67578042877577E9
+# Different Points: 720
+====================================
+Elapse Training Time: 62.655 [sec]
+cores: 160
+rows: 5000000
+numClusters: 1000
+dimension: 10
+numPartition: 160
+WSSSE: 1.6180279897728207E9
+# Different Points: 640
+====================================
+Elapse Training Time: 45.165 [sec]
+cores: 160
+rows: 5000000
+numClusters: 10
+dimension: 50
+numPartition: 160
+WSSSE: 5.714759948282567E9
+# Different Points: 0
+====================================
+Elapse Training Time: 60.701 [sec]
+cores: 160
+rows: 5000000
+numClusters: 50
+dimension: 50
+numPartition: 160
+WSSSE: 6.263776410779725E9
+# Different Points: 0
+====================================
+Elapse Training Time: 68.069 [sec]
+cores: 160
+rows: 5000000
+numClusters: 100
+dimension: 50
+numPartition: 160
+WSSSE: 6.838602822383165E9
+# Different Points: 0
+====================================
+Elapse Training Time: 89.74 [sec]
+cores: 160
+rows: 5000000
+numClusters: 500
+dimension: 50
+numPartition: 160
+WSSSE: 6.712108578071585E9
+# Different Points: 0
+====================================
+Elapse Training Time: 116.003 [sec]
+cores: 160
+rows: 5000000
+numClusters: 1000
+dimension: 50
+numPartition: 160
+WSSSE: 6.549919815699489E9
+# Different Points: 0
+====================================
+Elapse Training Time: 64.788 [sec]
+cores: 160
+rows: 5000000
+numClusters: 10
+dimension: 100
+numPartition: 160
+WSSSE: 9.742039711150211E9
+# Different Points: 0
+====================================
+Elapse Training Time: 88.698 [sec]
+cores: 160
+rows: 5000000
+numClusters: 50
+dimension: 100
+numPartition: 160
+WSSSE: 9.27680726497433E9
+# Different Points: 0
+====================================
+Elapse Training Time: 103.145 [sec]
+cores: 160
+rows: 5000000
+numClusters: 100
+dimension: 100
+numPartition: 160
+WSSSE: 9.93510329235438E9
+# Different Points: 0
+====================================
+Elapse Training Time: 145.291 [sec]
+cores: 160
+rows: 5000000
+numClusters: 500
+dimension: 100
+numPartition: 160
+WSSSE: 9.90930370768131E9
+# Different Points: 0
+====================================
+Elapse Training Time: 299.384 [sec]
+cores: 160
+rows: 5000000
+numClusters: 10
+dimension: 500
+numPartition: 160
+WSSSE: 1.8545316217445675E10
+# Different Points: 0
+====================================
+Elapse Training Time: 429.272 [sec]
+cores: 160
+rows: 5000000
+numClusters: 50
+dimension: 500
+numPartition: 160
+WSSSE: 1.8296742192576847E10
+# Different Points: 0
+====================================
+Elapse Training Time: 501.707 [sec]
+cores: 160
+rows: 5000000
+numClusters: 100
+dimension: 500
+numPartition: 160
+WSSSE: 2.4457486528821613E10
+# Different Points: 0
+====================================
+Elapse Training Time: 705.711 [sec]
+cores: 160
+rows: 5000000
+numClusters: 500
+dimension: 500
+numPartition: 160
+WSSSE: 2.368450075683369E10
+# Different Points: 0
+====================================
+Elapse Training Time: 626.882 [sec]
+cores: 160
+rows: 5000000
+numClusters: 10
+dimension: 1000
+numPartition: 160
+WSSSE: 2.2362721111288673E10
+# Different Points: 0
+====================================
+Elapse Training Time: 894.654 [sec]
+cores: 160
+rows: 5000000
+numClusters: 50
+dimension: 1000
+numPartition: 160
+WSSSE: 3.1596386777561516E10
+# Different Points: 0
+====================================
+Elapse Training Time: 1001.352 [sec]
+cores: 160
+rows: 5000000
+numClusters: 100
+dimension: 1000
+numPartition: 160
+WSSSE: 3.479301872487423E10
+# Different Points: 0
+====================================
+Elapse Training Time: 2786.595 [sec]
+cores: 160
+rows: 5000000
+numClusters: 10
+dimension: 5000
+numPartition: 160
+WSSSE: 6.373566933460931E10
+# Different Points: 0
+====================================
+Elapse Training Time: 4559.978 [sec]
+cores: 160
+rows: 5000000
+numClusters: 50
+dimension: 5000
+numPartition: 160
+WSSSE: 7.208667661639491E10
+# Different Points: 0
