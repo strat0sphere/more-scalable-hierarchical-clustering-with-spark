@@ -5,7 +5,7 @@ assemblySettings
 
 name := "hierarchical-clustering"
 
-version := "0.0.1"
+version := "0.0.2"
 
 scalaVersion := "2.10.4"
 
@@ -18,11 +18,11 @@ seq(sbtprotobuf.ProtobufPlugin.protobufSettings: _*)
 // additional libraries
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "2.1.5" % "test",
-  "org.apache.spark" %% "spark-core" % "1.2.0",
-  "org.apache.spark" %% "spark-sql" % "1.2.0",
-  "org.apache.spark" %% "spark-hive" % "1.2.0",
-  "org.apache.spark" %% "spark-streaming" % "1.2.0",
-  "org.apache.spark" %% "spark-mllib" % "1.2.0"
+  "org.apache.spark" %% "spark-core" % "1.4.0",
+  "org.apache.spark" %% "spark-sql" % "1.4.0",
+  "org.apache.spark" %% "spark-hive" % "1.4.0",
+  "org.apache.spark" %% "spark-streaming" % "1.4.0",
+  "org.apache.spark" %% "spark-mllib" % "1.4.0"
 )
 
 resolvers ++= Seq(

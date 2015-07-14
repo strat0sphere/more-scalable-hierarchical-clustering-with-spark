@@ -18,6 +18,6 @@ class HierarchicalClusteringAppSuite extends FunSuite {
       dimension,
       numPartitions
     ).map(_.toString)
-    HierarchicalClusteringApp.main(args)
+    BisectingKMeansApp.main(args)
   }
 }

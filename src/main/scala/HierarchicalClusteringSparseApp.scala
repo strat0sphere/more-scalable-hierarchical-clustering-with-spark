@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import org.apache.spark.mllib.clustering.HierarchicalClustering
+import org.apache.spark.mllib.clustering.BisectingKMeans
 import org.apache.spark.mllib.linalg.{SparseVector, Vector, Vectors}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
@@ -46,7 +46,8 @@ object HierarchicalClusteringSparseApp {
     val data = trainData.map(_._2)
 
     val trainStart = System.currentTimeMillis()
-    val model = HierarchicalClustering.train(data, numClusters)
+    val algo = new BisectingKMeans().setNumClusters(numClusters)
+    val model = algo.run(data)
     val trainEnd = System.currentTimeMillis() - trainStart
 
     sc.broadcast(vectors)
@@ -63,8 +64,8 @@ object HierarchicalClusteringSparseApp {
     println(s"Elapse Training Time: ${trainEnd / 1000.0} [sec]")
     println(s"cores: ${cores}")
     println(s"rows: ${data.count}")
-    println(s"numClusters: ${model.getClusters().size}")
-    println(s"dimension: ${model.getCenters().head.size}")
+    println(s"numClusters: ${model.getClusters.size}")
+    println(s"dimension: ${model.getCenters.head.size}")
     println(s"numPartition: ${trainData.partitions.length}")
     println(s"sparsity: ${sparsity}")
     println(s"# Different Points: ${failuars}")
