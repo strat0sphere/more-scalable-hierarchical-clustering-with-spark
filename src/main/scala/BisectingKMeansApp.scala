@@ -36,10 +36,10 @@ object BisectingKMeansApp {
     sc.broadcast(model)
     val distances = trainData.map { case (idx, point) =>
       val origin = vectors(idx)
-      val diff = point.toArray.zip(origin.toArray).map { case (a, b) => (a - b) * (a - b)}.sum
-      math.pow(diff, origin.size)
+      val diff = point.toArray.zip(origin.toArray).map { case (a, b) => (a - b) * (a - b)}.map(math.sqrt).sum
+      diff / origin.size
     }
-    val failuars = distances.filter(_ > 10E-5).count
+    val failuars = distances.filter(_ > 0.1).count
 
 
     println(s"====================================")
@@ -49,6 +49,7 @@ object BisectingKMeansApp {
     println(s"numClusters: ${model.getClusters.size}")
     println(s"dimension: ${model.getCenters.head.size}")
     println(s"numPartition: ${trainData.partitions.length}")
+    println(s"WSSSE: ${model.WSSSE(data)}")
     println(s"# Different Points: ${failuars}")
   }
 
