@@ -1,0 +1,36 @@
+====================================
+Elapse Training Time: 263.938 [sec]
+cores: 40
+rows: 1000000
+numClusters: 100
+dimension: 1000
+numPartition: 40
+WSSSE: 6.668002066675145E9
+# Different Points: 0
+====================================
+Elapse Training Time: 276.215 [sec]
+cores: 80
+rows: 1000000
+numClusters: 100
+dimension: 1000
+numPartition: 80
+WSSSE: 7.189023317539995E9
+# Different Points: 0
+====================================
+Elapse Training Time: 268.087 [sec]
+cores: 120
+rows: 1000000
+numClusters: 100
+dimension: 1000
+numPartition: 120
+WSSSE: 6.325353416553565E9
+# Different Points: 0
+====================================
+Elapse Training Time: 255.287 [sec]
+cores: 160
+rows: 1000000
+numClusters: 100
+dimension: 1000
+numPartition: 160
+WSSSE: 7.496090820105978E9
+# Different Points: 0
