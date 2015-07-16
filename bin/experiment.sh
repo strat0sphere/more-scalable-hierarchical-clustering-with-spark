@@ -9,7 +9,7 @@ __JAR="/root/more-scalable-hierarchical-clustering-with-spark/target/scala-2.10/
 
 ## paramters
 __MAX_CPU_CORES_LIST="40 80 120 160"
-__DATA_SIZE_LIST="1000000"
+__DATA_SIZE_LIST="5000000"
 __DIMENSION_LIST="1000"
 __NUM_CLUSTERS_LIST="100"
 
